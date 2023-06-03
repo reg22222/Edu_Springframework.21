@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	<mvc:annotation-driven></mvc:annotation-driven>
+	<context:component-scan
+		base-package="jeonggeun.spring.web" />
+	<aop:aspectj-autoproxy />
+	<tx:annotation-driven></tx:annotation-driven>
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="10240000" />
+	</bean>
+
+	<!-- 예외처리 설정 -->
+	<bean id="exceptionResolver"
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="java.lang.ArithmeticException">common/arithmeticError.jsp</prop>
+				<prop key="java.lang.NullPointerException">common/nullPointerError.jsp</prop>
+			</props>
+		</property>
+		<property name="defaultErrorView" value="common/error.jsp" />
+	</bean>
+
+	<!-- <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping"> 
+		<property name="mappings"> <props> <prop key="/login.do">login</prop> <prop 
+		key="/getBoardList.do">getBoardList</prop> <prop key="/getBoard.do">getBoard</prop> 
+		<prop key="/insertBoard.do">insertBoard</prop> <prop key="/updateBoard.do">updateBoard</prop> 
+		<prop key="/deleteBoard.do">deleteBoard</prop> <prop key="/logout.do">logout</prop> 
+		</props> </property> </bean> <bean id="login" class="jeonggeun.spring.web.user.LoginController"></bean> 
+		<bean id="getBoardList" class="jeonggeun.spring.web.board.GetBoardListController"></bean> 
+		<bean id="getBoard" class="jeonggeun.spring.web.board.GetBoardController"></bean> 
+		<bean id="insertBoard" class="jeonggeun.spring.web.board.InsertBoardController"></bean> 
+		<bean id="updateBoard" class="jeonggeun.spring.web.board.UpdateBoardController"></bean> 
+		<bean id="deleteBoard" class="jeonggeun.spring.web.board.DeleteBoardController"></bean> 
+		<bean id="logout" class="jeonggeun.spring.web.user.LogoutController"></bean> 
+		<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
+		<property name="prefix" value="/WEB-INF/board/"></property> <property name="suffix" 
+		value=".jsp"></property> </bean> -->
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.SessionLocaleResolver"></bean>
+	<mvc:interceptors>
+		<bean
+			class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<property name="paramName" value="lang" />
+		</bean>
+	</mvc:interceptors>
+</beans>
